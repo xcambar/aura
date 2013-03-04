@@ -16,6 +16,7 @@
     "grunt-mocha": "~0.2.2"
   },
   "scripts": {
+    "install": "./node_modules/bower/bin/bower install",
     "pretest": "bower install",
     "test": "grunt build"
   }
