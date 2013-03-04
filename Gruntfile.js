@@ -9,6 +9,31 @@ module.exports = function (grunt) {
 
   var PORT = 8899;
 
+  var auraRequireBaseConfig = {
+    options: {
+      baseUrl: '.',
+      paths: {
+        aura: 'lib',
+        jquery: 'empty:',
+        underscore: 'empty:',
+        eventemitter: 'components/eventemitter2/lib/eventemitter2'
+      },
+      shim: {
+        underscore: {
+          exports: '_'
+        }
+      },
+      include: [
+        'aura/aura',
+        'aura/aura.extensions',
+        'aura/ext/debug',
+        'aura/ext/mediator',
+        'aura/ext/widgets'
+      ],
+      exclude: ['jquery']
+    }
+  };
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     connect: {
@@ -20,32 +45,23 @@ module.exports = function (grunt) {
       }
     },
     requirejs: {
-      compile: {
+      dev: grunt.util._.merge({}, auraRequireBaseConfig, {
         options: {
-          baseUrl: '.',
           optimize: 'none',
-          paths: {
-            aura: 'lib',
-            jquery: 'empty:',
-            underscore: 'empty:',
-            eventemitter: 'components/eventemitter2/lib/eventemitter2'
-          },
-          shim: {
-            underscore: {
-              exports: '_'
-            }
-          },
-          include: [
-            'aura/aura',
-            'aura/aura.extensions',
-            'aura/ext/debug',
-            'aura/ext/mediator',
-            'aura/ext/widgets'
-          ],
-          exclude: ['jquery'],
           out: 'dist/aura.js'
         }
-      }
+      }),
+      build: grunt.util._.merge({}, auraRequireBaseConfig, {
+        options: {
+          optimize: 'none',
+          out: 'dist/aura-<%= pkg.version %>.js'
+        }
+      }),
+      buildMin: grunt.util._.merge({}, auraRequireBaseConfig, {
+        options: {
+          out: 'dist/aura-<%= pkg.version %>.min.js'
+        }
+      })
     },
     jshint: {
       all: {
@@ -77,6 +93,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('spec', ['jshint', 'mocha']);
-  grunt.registerTask('build', ['connect', 'spec', 'requirejs']);
+  grunt.registerTask('build', ['connect', 'spec', 'requirejs:dev']);
+  grunt.registerTask('version', ['connect', 'spec', 'requirejs:build', 'requirejs:buildMin']);
   grunt.registerTask('default', ['connect', 'spec', 'watch']);
 };
