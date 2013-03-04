@@ -17,6 +17,7 @@
     "grunt-dox": "~0.4.1"
   },
   "scripts": {
+    "install": "./node_modules/bower/bin/bower install",
     "pretest": "bower install",
     "test": "grunt build"
   }
