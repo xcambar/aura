@@ -1,6 +1,8 @@
-# Aura 1.0pre [![Build Status](https://travis-ci.org/aurajs/aura.png?branch=master)](https://travis-ci.org/aurajs/aura)
+# Aura 0.9pre [![Build Status](https://travis-ci.org/aurajs/aura.png?branch=master)](https://travis-ci.org/aurajs/aura)
 
 Aura is a decoupled, event-driven architecture for developing widget-based applications. It takes advantage of patterns and best practices for developing maintainable applications and gives you greater control over widget-based development. Aura gives you complete control of a widget's lifecycle, allowing developers to dynamically start, stop, reload and clean-up parts of their application as needed.
+
+<img src="https://raw.github.com/hull/aura-identity/master/logo/export/halo.png" width="300px"/>
 
 ## Concepts
 
@@ -128,9 +130,26 @@ This will call the `initialize` function of our reserve extension.
 
 Calling `use` when your `app` is already started will throw an error.
 
+## Resources
+
+### Sample apps
+
+* [Hullagram](https://github.com/hull/hullagram) - demonstrating Aura + Hull
+* Aura [Todos app](https://github.com/sbellity/aura-todos/) and an [alternative take](https://github.com/alexanderbeletsky/todomvc-aura)
+
+
+### Yeoman generator
+
+* [Aura generator](https://github.com/yeoman-aura/generator-aura)
+
+### Development docs
+
+* [Notes](https://github.com/aurajs/aura/tree/master/notes)
+* In-progress [docs](http://tony.github.com/aura-docs/index.html)
+
 ## Project status
 
-Aura 0.9.x was well received by the developer community, but had regular requests for a few advanced capabilities. These included individual sandboxes, declarative widgets, support for Bower and a powerful Pub/Sub implementation amongst others.
+Aura 0.8.x was well received by the developer community, but had regular requests for a few advanced capabilities. These included individual sandboxes, declarative widgets, support for Bower and a powerful Pub/Sub implementation amongst others.
 
 To cater for this, Aura has been getting a heavy re-write over the past few months and we anticipate releasing a beta that can be tested in April, 2013. This will be followed by detailed documentation and new demo applications.
 
