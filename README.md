@@ -1,8 +1,27 @@
 # Aura 0.9pre [![Build Status](https://travis-ci.org/aurajs/aura.png?branch=master)](https://travis-ci.org/aurajs/aura)
 
-Aura is a decoupled, event-driven architecture for developing widget-based applications. It takes advantage of patterns and best practices for developing maintainable applications and gives you greater control over widget-based development. Aura gives you complete control of a widget's lifecycle, allowing developers to dynamically start, stop, reload and clean-up parts of their application as needed.
+Aura is an event-driven architecture for developing widget-based applications that scale. It is framework-agnostic, adapts many best-practice patterns for developing maintainable apps and has first-class support for modern tools like [Bower](http://bower.io), [Grunt](http://gruntjs.com) and [Yeoman](http://yeoman.io).
+
+Aura has been used to develop applications like [MIT's Reap](http://www.bobholt.me/2012/09/how-it-was-built-mit-reap/) and is currently under active development.
+
+Want to look at some sample apps built with Aura? Check out the [GitHub client](https://github.com/sbellity/aura-github), an Aura [Todo](https://github.com/sbellity/aura-todos/) app implemented [two](https://github.com/alexanderbeletsky/todomvc-aura) ways and [Hullagram](https://github.com/hull/hullagram) - an Instagram clone built with Aura and [Hull.io](http://hull.io).
 
 <img src="https://raw.github.com/hull/aura-identity/master/logo/export/halo.png" width="300px"/>
+
+## Why Aura?
+
+* It's basically **glue** for your application widgets, making it trivial to tie together a number of independently created widgets into a fully functional application. 
+* A complete event-bus supporting **application-level and widget-level communication** mean you have control over what is getting triggered in your app
+* Specify an API end-point for widgets easily and just **use data-attributes to include any widget** or widgets. Minimal JavaScript for more capabilities.
+* **Abstract away utility libraries** you are using (templating, DOM manipulation) so that you can swap them out for alternatives at any time without a great deal of effort
+* Hit the ground running quickly widgets into **reusable modules using AMD**.
+* Bower is a first-class citizen in Aura, making it easier to **manage your application dependencies**
+* The web platform is moving towards using scoped styles and shadow DOM for keeping parts of your page safe from third-party content that might affect it. Aura does the same for communications by introducing per-widget **sandboxes** for your events
+* Tooling for **scaffolding** out new widgets without having to write as much boilerplate
+* Can be used with your MVC framework of choice - we're just there as a helper.
+* First-class support for the Hull.io platform. If you don't want to create a widget yourself, you can easily use them as a widget-source and create apps in less time.
+* Extensible via the extensions system, which make a good basis for a rich ecosystem around the project.
+
 
 ## Concepts
 
@@ -33,6 +52,8 @@ This means that they know nothing about each other. To make them communicate, a 
 
 
 ## Getting started
+
+The simplest usable Aura app using a widget and extension can be found in our [boilerplate](https://github.com/aurajs/boilerplate) repo. We do however recommend reading the rest of the getting started guide below to get acquainted with the general workflow.
 
 ### Requirements
 
@@ -104,7 +125,7 @@ Add the following code to your HTML document.
 
 Aura will call the `initialize` method that we have defined in `widgets/hello/main.js`.
 
-### Creating extension
+### Creating an extension
 
 Imagine that we need an helper to reverse a string. In order to accomplish that we'll need to create an extension.
 
@@ -118,34 +139,131 @@ define('extensions/reverse', {
 });
 ```
 
-### Using extension
+### Using extensions
 
-To make our `reserve` helper available in our app, run the following code:
+To make our `reverse` helper available in our app, run the following code:
 
 ```js
 app.use('extensions/reverse');
 ```
 
-This will call the `initialize` function of our reserve extension.
+This will call the `initialize` function of our `reverse` extension.
 
 Calling `use` when your `app` is already started will throw an error.
 
+### Debugging
+
+To make `app.logger` available, pass `{debug: true}` into Aura constructor:
+
+```js
+var app = new Aura({debug: true});
+```
+
+Logger usage:
+
+```js
+// You can use logger from widgets or extensions
+var logger = sandbox.logger;
+
+logger.log('Hey');
+logger.warn('Hey');
+logger.error('Hey');
+```
+
+If you want to enable event logging, do this:
+
+```js
+var app = new Aura({debug: true, logEvents: true});
+```
+
+Also, when parameter `debug` is true, you can declare following function for any debug purposes:
+
+```js
+// Function will be called for all Aura apps in your project
+window.attachDebugger = function (app) {
+  // Do cool stuff with app object
+  console.log(app);
+
+  // Maybe you want to have access to Aura app via developer console?
+  window.aura = app;
+};
+```
+
+
 ## Resources
-
-### Sample apps
-
-* [Hullagram](https://github.com/hull/hullagram) - demonstrating Aura + Hull
-* Aura [Todos app](https://github.com/sbellity/aura-todos/) and an [alternative take](https://github.com/alexanderbeletsky/todomvc-aura)
-
 
 ### Yeoman generator
 
-* [Aura generator](https://github.com/yeoman-aura/generator-aura)
+An Aura scaffolding generator (for Yeoman) is also available at [Aura generator](https://github.com/yeoman-aura/generator-aura).
 
-### Development docs
+### Usage
+
+```bash
+# First make a new directory, and `cd` into it:
+mkdir my-awesome-project && cd $_
+
+# Then install `generator-aura`:
+npm install -g generator-aura
+
+# Run `yo aura`, optionally passing an app name:
+yo aura [app-name]
+
+# Finally, install npm and bower dependencies:
+npm install && bower install --dev
+```
+
+### Generators
+
+Available generators:
+
+* [aura:widget](#widget)
+* [aura:extension](#extension)
+* [aura:styles](#styles)
+
+#### Widget
+Generates a widget in `app/widgets`.
+
+Example:
+
+```bash
+yo aura:widget sample
+```
+
+Produces `app/widgets/sample/main.js`
+
+#### Extension
+Generates a extension in `app/extensions`.
+
+Example:
+```bash
+yo aura:extension storage
+```
+
+Produces `app/extensions/storage.js`
+
+#### Styles
+Generates cool styles.
+
+Example:
+```bash
+yo aura:styles
+```
+
+##### Supported types:
+
+* Default (normalize.css)
+* Twitter Bootstrap
+* Twitter Bootstrap for Compass
+* Zurb Foundation
+
+
+### Aura Development docs
 
 * [Notes](https://github.com/aurajs/aura/tree/master/notes)
-* In-progress [docs](http://tony.github.com/aura-docs/index.html)
+
+## Contribute
+
+See the [contributing docs](https://github.com/aurajs/aura/blob/master/contributing.md)
 
 ## Project status
 
@@ -154,10 +272,3 @@ Aura 0.8.x was well received by the developer community, but had regular request
 To cater for this, Aura has been getting a heavy re-write over the past few months and we anticipate releasing a beta that can be tested in April, 2013. This will be followed by detailed documentation and new demo applications.
 
 A version of Aura currently powers the [Hull.io](http://hull.io) widget platform and we are honored to have members of that team directly contributing to the next version of the project.
-
-## Older versions
-
-We have recently been receiving a number of requests from developers looking for the last stable version of Aura
-that demonstrated integration with Backbone. You can [view](https://github.com/aurajs/aura/tree/pre-express-lib-updates)
-the sources to this 0.9.x version or grab a [tarball](https://github.com/aurajs/aura/archive/pre-express-lib-updates.tar.gz) of it.
-We fully intend on showing how Aura 1.0pre works with Backbone as soon as possible.
