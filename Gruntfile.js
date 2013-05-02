@@ -4,7 +4,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-mocha');
 
   var PORT = 8899;
@@ -44,25 +44,29 @@ module.exports = function (grunt) {
         }
       }
     },
-    requirejs: {
-      dev: grunt.util._.merge({}, auraRequireBaseConfig, {
-        options: {
-          optimize: 'none',
-          out: 'dist/aura.js'
-        }
-      }),
-      build: grunt.util._.merge({}, auraRequireBaseConfig, {
-        options: {
-          optimize: 'none',
-          out: 'dist/aura-<%= pkg.version %>.js'
-        }
-      }),
-      buildMin: grunt.util._.merge({}, auraRequireBaseConfig, {
-        options: {
-          out: 'dist/aura-<%= pkg.version %>.min.js'
-        }
-      })
+    browserify: {
+      src: ['lib/**/*.js'],
+      dest: 'dist/aura.cjs.js'
     },
+    // requirejs: {
+    //   dev: grunt.util._.merge({}, auraRequireBaseConfig, {
+    //     options: {
+    //       optimize: 'none',
+    //       out: 'dist/aura.js'
+    //     }
+    //   }),
+    //   build: grunt.util._.merge({}, auraRequireBaseConfig, {
+    //     options: {
+    //       optimize: 'none',
+    //       out: 'dist/aura-<%= pkg.version %>.js'
+    //     }
+    //   }),
+    //   buildMin: grunt.util._.merge({}, auraRequireBaseConfig, {
+    //     options: {
+    //       out: 'dist/aura-<%= pkg.version %>.min.js'
+    //     }
+    //   })
+    // },
     jshint: {
       all: {
         options: {
