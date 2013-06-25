@@ -54,12 +54,12 @@ module.exports = function (grunt) {
       build: grunt.util._.merge({}, auraRequireBaseConfig, {
         options: {
           optimize: 'none',
-          out: 'dist/aura-<%= pkg.version %>.js'
+          out: 'dist/aura.js'
         }
       }),
       buildMin: grunt.util._.merge({}, auraRequireBaseConfig, {
         options: {
-          out: 'dist/aura-<%= pkg.version %>.min.js'
+          out: 'dist/aura.min.js'
         }
       })
     },
